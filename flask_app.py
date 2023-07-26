@@ -40,11 +40,8 @@ def generate_random_hash(length=6):
 
 @app.route('/')
 def main_page():
-    return render_template('index.html')
-
-@app.route('/custom')
-def custom_page():
-    return render_template('custom.html')
+    return render_template('index.html',
+                           moe_image_url=CONFIG["site"]["moe_image"])
 
 @app.route('/api/add_shortened', methods=['POST'])
 def new_link():
