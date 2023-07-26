@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moekyun link shortener</title>
+    <meta name="description" content="Make your links more moe moe kyun!">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <img src="https://pinapelz.moe/images/603.png" alt="Moe" class="moe-image">
+        <h1>moekyun.me</h1>
+        <h2>make your links more moe</h2>
+        <button type="button" id="custom-button">Custom URL</button>
+        <form id="shorten-form">
+            <input type="text" id="shorten-input" placeholder="A very very very very very very long URL">
+            <button type="submit" id="shorten-button">Shorten</button>
+        </form>
+
+        <div id="shorten-result">
+            <p id="shorten-link"><a id="shortened-url" target="_blank"></a></p>
+        </div>
+    </div>
+
+    <div id="custom-popup" class="popup">
+        <div class="popup-content">
+            <h2>Custom URL</h2>
+            <p>moekyun.me/ <input type="text" id="custom-url-input" placeholder="my_oshi"> </p> 
+            <input type="text" id="custom-redirect-input" placeholder="Another very very very very long URL">
+            <input type="text" id="authentication-input" placeholder="Authentication Key">
+            <button type="button" id="cancel-button">Cancel</button>
+            <button type="button" id="save-button">Submit</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
