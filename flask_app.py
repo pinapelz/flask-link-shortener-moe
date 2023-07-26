@@ -65,7 +65,7 @@ def new_link():
         else:
             break
     server.insert_row("shortened_links", "link, shortened_link", (requested_link, hash_value))
-    return jsonify(hash_value)
+    return jsonify(CONFIG["site"]["url"]+"/"+hash_value)
 
 @app.route("/api/add_custom", methods=['POST'])
 def add_custom():
@@ -92,7 +92,7 @@ def add_custom():
     if server.check_row_exists("shortened_links", "shortened_link", custom_link):
         return abort(400, "Custom link already exists")
     server.insert_row("shortened_links", "link, shortened_link", (requested_link, custom_link))
-    return jsonify(custom_link)
+    return jsonify(CONFIG["site"]["url"]+"/"+custom_link)
 
 
 

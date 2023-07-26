@@ -32,7 +32,7 @@ shortenForm.addEventListener('submit', (event) => {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            const shortened = "https://moekyun.me/"+data; 
+            const shortened = data; 
             shortenedUrl.href = shortened;
             shortenedUrl.textContent = shortened;
             shortenResult.style.display = 'block';
@@ -77,7 +77,7 @@ saveButton.addEventListener('click', () => {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
-      const shortened = "https://moekyun.me/"+data; 
+      const shortened = data; 
       shortenedUrl.href = shortened;
       shortenedUrl.textContent = shortened;
       shortenResult.style.display = 'block';
