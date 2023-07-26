@@ -203,3 +203,55 @@ p {
     font-size: 22px;
     color: #FF69B4;
   }
+
+@media screen and (max-width: 767px) {
+body {
+    padding: 20px; 
+}
+
+.container {
+    padding: 20px; /* Adjust the padding for container on mobile */
+}
+
+h1 {
+    font-size: 24px; /* Adjust the heading font size for mobile */
+}
+
+h2 {
+    font-size: 14px; 
+}
+
+#shorten-input {
+    width: 100%;
+}
+
+#shorten-button {
+    width: 100%;
+}
+
+#custom-button {
+    width: 100%; 
+}
+
+#custom-url-input,
+#authentication-input,
+#custom-redirect-input {
+    width: 80%; 
+}
+
+#cancel-button,
+#save-button {
+    margin: 10px auto;
+}
+
+#shorten-link {
+    font-size: 16px;
+}
+
+.moe-image {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+
+}
