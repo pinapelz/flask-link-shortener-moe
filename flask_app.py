@@ -72,7 +72,7 @@ def add_custom():
     password = request.headers.get('X-AUTHENTICATION')
     if password is None:
         return abort(401, "Invalid Authentication")
-    if not server.check_row_exists("authentication", "password", password):
+    if not server.check_row_exists("authentication", "authkey", password):
         return abort(401, "Invalid Authentication")
 
     if requested_link is None:
