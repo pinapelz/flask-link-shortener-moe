@@ -10,7 +10,7 @@ CORS(app)
 
 
 parser = configparser.ConfigParser()
-parser.read("config.ini")
+parser.read("/home/pinapelz/moekyun-shortener/config.ini")
 CONFIG = parser
 
 def create_database_connection():
@@ -41,7 +41,8 @@ def generate_random_hash(length=6):
 @app.route('/')
 def main_page():
     return render_template('index.html',
-                           moe_image_url=CONFIG["site"]["moe_image"])
+                           moe_image_url=CONFIG["site"]["moe_image"],
+                           moe_quote=CONFIG["site"]["moe_quote"])
 
 @app.route('/api/add_shortened', methods=['POST'])
 def new_link():
