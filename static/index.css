@@ -24,6 +24,7 @@ h2 {
     border-radius: 10px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     padding: 40px; 
+    margin-left: 60px;
     max-width: 500px; 
     width: 90%;
     transition: transform 0.3s ease-in-out;
@@ -34,6 +35,8 @@ h1 {
     color: #FF69B4;
     font-size: 28px;
 }
+
+
 
 #shorten-form {
     display: flex;
@@ -98,7 +101,7 @@ h1 {
 }
 
 a{
-    color: #43a848;
+    color: #FF69B4;
 }
 
 #shorten-link:hover {
@@ -109,7 +112,7 @@ a{
 .moe-image {
     max-width: 250x;
     max-height: 250px;
-    border-radius: 50%;
+    border-radius: 30%;
     animation: float 3s ease-in-out infinite;
 }
 
@@ -149,6 +152,7 @@ a{
     color: #FF69B4;
     font-size: 24px;
 }
+
 
 #custom-url-input
 {
@@ -198,11 +202,24 @@ a{
 #cancel-button:hover, #save-button:hover {
     background-color: #FF1493;
 }
-p {
+
+p,li {
     font-family: 'Comic Neue', cursive;
     font-size: 22px;
     color: #FF69B4;
-  }
+}
+
+#about h2 {
+    margin-bottom: 30px;
+    color: #ffffff;
+    font-size: 28px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 
 @media screen and (max-width: 767px) {
 body {

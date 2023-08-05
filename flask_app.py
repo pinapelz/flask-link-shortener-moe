@@ -106,6 +106,9 @@ def expand_url(path):
     return abort(404, "Link not found")
 
 
+@app.route('/misskey/tos')
+def misskey_tos():
+    return render_template('misskey_tos.html')
     
     
 
