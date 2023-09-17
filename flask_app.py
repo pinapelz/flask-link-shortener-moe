@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort, jsonify, redirect
-from database.postgres_handler import PostgresHandler
+from database.sql_handler import SQLHandler
 from flask_cors import CORS
 import configparser
 import string
@@ -11,7 +11,7 @@ CORS(app)
 
 
 parser = configparser.ConfigParser()
-parser.read("/home/pinapelz/Repositories/link-shortener-moe/config.ini")
+parser.read("config.ini")
 CONFIG = parser
 
 def create_database_connection():
@@ -27,19 +27,19 @@ def create_database_connection():
         password = os.environ.get("MK_DATABASE_PASSWORD")
         port = int(os.environ.get("MK_DATABASE_PORT"))
         database = os.environ.get("MK_DATABASE_NAME")
-    return PostgresHandler(host_name=hostname, username=user, password=password, database=database, port=int(port))
+    return SQLHandler(host_name=hostname, username=user, password=password, database=database)
 
 
 
 def initialize_database():
-    postgres_handler = create_database_connection()
-    postgres_handler.create_table(
+    sql_handler = create_database_connection()
+    sql_handler.create_table(
         "shortened_links",
-        "id SERIAL PRIMARY KEY, link VARCHAR(255), shortened_link VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+        "id INT AUTO_INCREMENT PRIMARY KEY, link VARCHAR(255), shortened_link VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
     )
-    postgres_handler.create_table(
+    sql_handler.create_table(
         "authentication",
-        "id SERIAL PRIMARY KEY, authkey VARCHAR(255) UNIQUE"
+        "id INT AUTO_INCREMENT PRIMARY KEY, authkey VARCHAR(255) UNIQUE"
     )
 initialize_database()
 

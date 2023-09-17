@@ -6,19 +6,19 @@ sshtunnel.SSH_TIMEOUT = 5.0
 sshtunnel.TUNNEL_TIMEOUT = 5.0
 
 class SQLHandler:
-    def __init__(self, host_name: str, user_name: str, user_password: str, database_name: str = None, ssh_host: str = None, ssh_username: str = None, ssh_password: str = None, ssh_remote_bind: str = None):
+    def __init__(self, host_name: str, username: str, password: str, database: str = None, ssh_host: str = None, ssh_username: str = None, ssh_password: str = None, ssh_remote_bind: str = None):
         self.host_name = host_name
-        self.username = user_name
-        self.password = user_password
-        self.database_name = database_name
+        self.username = username
+        self.password = password
+        self.database_name = database
         if ssh_host is None or ssh_username is None or ssh_password is None:
             self.connection = self._create_server_connection(
-                host_name, user_name, user_password)
+                host_name, username, password)
         else:
             self.connection = self._create_ssh_server_connection(
-                ssh_host, ssh_username, ssh_password, ssh_remote_bind, host_name, user_name, user_password)
-        if database_name is not None:
-            self._load_database(database_name)
+                ssh_host, ssh_username, ssh_password, ssh_remote_bind, host_name, username, password)
+        if database is not None:
+            self._load_database(database)
 
     def _create_server_connection(self, host_name: str, user_name: str, user_password: str) -> mysql.connector:
         connection = None
