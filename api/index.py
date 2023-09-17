@@ -1,35 +1,46 @@
 from flask import Flask, render_template, request, abort, jsonify, redirect
-from database.sql_handler import SQLHandler
+from database.postgres_handler import PostgresHandler
 from flask_cors import CORS
 import configparser
 import string
 import secrets
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 
 parser = configparser.ConfigParser()
-parser.read("/home/pinapelz/moekyun-shortener/config.ini")
+parser.read("/home/pinapelz/Repositories/link-shortener-moe/config.ini")
 CONFIG = parser
 
 def create_database_connection():
-    hostname = CONFIG.get("database", "host")
-    user = CONFIG.get("database", "user")
-    password = CONFIG.get("database", "password")
-    database = CONFIG.get("database", "database")
-    ssh_host = CONFIG.get("database", "ssh_host")
-    ssh_username = CONFIG.get("database", "ssh_username")
-    ssh_password = CONFIG.get("database", "ssh_password")
-    remote_bind = CONFIG.get("database", "remote_bind")
-    if ssh_host.strip() == "" or ssh_username.strip() == "" or ssh_password.strip() == "":
-        return SQLHandler(hostname, user, password, database)
-    return SQLHandler(hostname, user, password, database, ssh_host, ssh_username, ssh_password, remote_bind)
+    try:
+        hostname = CONFIG.get("database", "host")
+        user = CONFIG.get("database", "user")
+        password = CONFIG.get("database", "password")
+        database = CONFIG.get("database", "database")
+        port = CONFIG.get("database", "port")
+    except Exception:
+        hostname = os.environ.get("MK_DATABASE_HOSTNAME")
+        user = os.environ.get("MK_DATABASE_USER")
+        password = os.environ.get("MK_DATABASE_PASSWORD")
+        port = int(os.environ.get("MK_DATABASE_PORT"))
+        database = os.environ.get("MK_DATABASE_NAME")
+    return PostgresHandler(host_name=hostname, username=user, password=password, database=database, port=int(port))
+
+
 
 def initialize_database():
-    sql_handler = create_database_connection()
-    sql_handler.create_table("shortened_links", "id INT AUTO_INCREMENT PRIMARY KEY, link VARCHAR(255), shortened_link VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    sql_handler.create_table("authentication", "id INT AUTO_INCREMENT PRIMARY KEY, authkey VARCHAR(255) UNIQUE")
+    postgres_handler = create_database_connection()
+    postgres_handler.create_table(
+        "shortened_links",
+        "id SERIAL PRIMARY KEY, link VARCHAR(255), shortened_link VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    )
+    postgres_handler.create_table(
+        "authentication",
+        "id SERIAL PRIMARY KEY, authkey VARCHAR(255) UNIQUE"
+    )
 initialize_database()
 
 
@@ -63,6 +74,7 @@ def new_link():
         else:
             break
     server.insert_row("shortened_links", "link, shortened_link", (requested_link, hash_value))
+    server.close_connection()
     return jsonify(CONFIG["site"]["url"]+"/"+hash_value)
 
 @app.route("/api/add_custom", methods=['POST'])
@@ -74,6 +86,7 @@ def add_custom():
     if password is None:
         return abort(401, "Invalid Authentication")
     if not server.check_row_exists("authentication", "authkey", password):
+        server.close_connection()
         return abort(401, "Invalid Authentication")
 
     if requested_link is None:
@@ -88,8 +101,10 @@ def add_custom():
     if custom_link.strip() == "":
         return abort(400, "Cannot shorten empty link")
     if server.check_row_exists("shortened_links", "shortened_link", custom_link):
+        server.close_connection()
         return abort(400, "Custom link already exists")
     server.insert_row("shortened_links", "link, shortened_link", (requested_link, custom_link))
+    server.close_connection()
     return jsonify(CONFIG["site"]["url"]+"/"+custom_link)
 
 
@@ -103,13 +118,8 @@ def expand_url(path):
         print(link)
         server.close_connection()
         return redirect(link)
+    server.close_connection()
     return abort(404, "Link not found")
-
-
-@app.route('/misskey/tos')
-def misskey_tos():
-    return render_template('misskey_tos.html')
-    
     
 
 
