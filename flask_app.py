@@ -3,6 +3,7 @@ from database.sql_handler import SQLHandler
 from flask_cors import CORS
 import configparser
 import string
+import random
 import secrets
 import os
 
@@ -51,9 +52,12 @@ def generate_random_hash(length=6):
 
 @app.route('/')
 def main_page():
+    images = open('graphics.txt').read().splitlines()
+    bottom_graphic = random.choice(images)
     return render_template('index.html',
                            moe_image_url=CONFIG["site"]["moe_image"],
-                           moe_quote=CONFIG["site"]["moe_quote"])
+                           moe_quote=CONFIG["site"]["moe_quote"],
+                           graphic=bottom_graphic)
 
 @app.route('/api/add_shortened', methods=['POST'])
 def new_link():

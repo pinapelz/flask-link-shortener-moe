@@ -9,7 +9,6 @@ body {
     height: 100vh;
     background-color: #FFD6E7; 
     background-image: linear-gradient(135deg, #FEB1CA 0%, #FFD6E7 100%);
-    background-image: url('https://files.catbox.moe/jtskfs.png');
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: 15%; 
